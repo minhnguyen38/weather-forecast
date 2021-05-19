@@ -1,0 +1,40 @@
+body {
+    text-align: center;
+}
+
+.icon-sizing-large {
+    font-size: 80px;
+}
+
+.icon-sizing-small {
+    font-size: 40px;
+}
+
+.current-weather .ant-card-bordered {
+    margin: 60px auto 50px auto;
+    border: 5px solid #c4bfbf;
+}
+
+.current-weather-icon {
+    width: 70px;
+}
+
+.current-temperature {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.range-of-temperature {
+    font-size: 26px;
+}
+
+.current-weather-status {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.five-days-weather > div {
+    padding: 0 16px;
+
+}
