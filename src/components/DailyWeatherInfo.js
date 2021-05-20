@@ -15,7 +15,7 @@ const DailyWeatherInfo = ({ item, list }) => {
         const { time } = formatDateAndTime(child.dt_txt)
         
         return (
-            <Col span={20} offset={2} key={`hoursTable${child.dt}`}>
+            <Col span={24} lg={20} key={`hoursTable${child.dt}`}>
 
                 <HoursWeatherInfo
                     style={{ backgroundColor: "#D5D7D0" }}
@@ -31,10 +31,10 @@ const DailyWeatherInfo = ({ item, list }) => {
     })
     return (
         <div style={{ marginBottom: "10px" }}>
-            <Row gutter={[24, 24]}>
-                <Col span={20} offset={2} style={{ borderBottom: "2px solid black", background: "#7D7FA3" }}>
+            <Row gutter={[24, 24]} justify="center">
+                <Col span={24} lg={20} className="daily-weather">
                     <HoursWeatherInfo
-                        style={{cursor: "pointer"}}
+                        style={{cursor: "pointer", color: "white"}}
                         date={date}
                         iconName={dailyWeatherIcon}
                         temp={averageTemp}

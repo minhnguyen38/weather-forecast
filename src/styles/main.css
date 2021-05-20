@@ -10,6 +10,11 @@ body {
     font-size: 40px;
 }
 
+.weather-card, .weather-search-input {
+    width: 500px;
+    max-width: 100%;
+}
+
 .current-weather .ant-card-bordered {
     margin: 60px auto 50px auto;
     border: 5px solid #c4bfbf;
@@ -36,5 +41,25 @@ body {
 
 .five-days-weather > div {
     padding: 0 16px;
+}
 
+.daily-weather {
+    border: 2px solid black;
+    background: #7D7FA3;
+}
+
+.wrapper-hour-weather-row {
+    padding-bottom: 10px;
+}
+
+@media (max-width: 980px) {   
+    .current-weather {
+        margin: 0 15px;
+    }
+    .daily-weather {
+        margin-bottom: 15px;
+    }
+    .wrapper-hour-weather-row {
+            font-size: 18px;
+    }
 }

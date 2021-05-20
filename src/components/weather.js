@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../styles/weather-icons.min.css'
 import cityData from '../city.list.json'
 import { AutoComplete, Input, Card } from 'antd';
@@ -15,6 +15,7 @@ const Weather = () => {
     const [weatherCurrentData, setWeatherCurrentData] = useState(null)
     const [showCurrentItem, setShowCurrentItem] = useState(false)
 
+
     const callCurrentWeatherAPI = cityName => {
         setShowCurrentItem(false)
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric&lang=vi`)
@@ -30,7 +31,35 @@ const Weather = () => {
             .then(data => setWeatherDetailData(data))
     }
 
-    const onSearch = (searchText) => { 
+    const callCurrentWeatherLocationAPI = (latitude, longitude) => {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?&appid=${API_KEY}&units=metric&lang=vi&lat=${latitude}&lon=${longitude}`)
+            .then(response => response.json())
+            .then(data => {
+                setWeatherCurrentData(data)
+                setShowCurrentItem(true)
+            })
+    }
+
+    const callForecastWeatherLocationAPI = (latitude, longitude) => {
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?&appid=${API_KEY}&units=metric&lang=vi&lat=${latitude}&lon=${longitude}`)
+            .then(response => response.json())
+            .then(data => setWeatherDetailData(data))
+    }
+
+    useEffect(() => {
+        const geoLocation = window.navigator.geolocation;
+        if (geoLocation) {
+            geoLocation.getCurrentPosition(pos => {
+                const lat = pos.coords.latitude
+                const lon = pos.coords.longitude;
+                callCurrentWeatherLocationAPI(lat, lon)
+                callForecastWeatherLocationAPI(lat, lon)
+            });
+        }
+    }, [])
+
+
+    const onSearch = (searchText) => {
         setOptions(
             !searchText
                 ? []
@@ -43,7 +72,7 @@ const Weather = () => {
         setCityId(cityData.find(item => item.name === name)?.id)
         callCurrentWeatherAPI(name)
         callWeatherDetailAPI(name)
-        
+
     };
 
     const onKeyDown = ({ key, target }) => {
@@ -52,7 +81,7 @@ const Weather = () => {
             if (firstItem) {
                 onSelect(firstItem.name)
                 setOptions([])
-                
+
             }
         }
     }
@@ -60,18 +89,19 @@ const Weather = () => {
     let currentWeatherIcon = weatherDescription?.[0]?.icon
     const dataWeatherForecast = weatherDetailData?.list
         ?.filter((item, idx) => idx % 8 === 0)
-        .map((item,idx) =>
+        .map((item, idx) =>
             <DailyWeatherInfo
                 key={idx}
                 item={item}
                 list={weatherDetailData.list}
+                style={{ maxWidth: "100%" }}
             />)
     return (
         <>
             <h1>Dự báo thời tiết</h1>
             <AutoComplete
                 options={options}
-                style={{ width: 500 }}
+                className="weather-search-input"
                 onSelect={onSelect}
                 onSearch={onSearch}
                 onKeyDown={onKeyDown}
@@ -86,7 +116,7 @@ const Weather = () => {
             {showCurrentItem && <div className="current-weather">
                 <Card
                     title={weatherCurrentData?.name}
-                    style={{ width: 500 }}
+                    className="weather-card"
                 >
                     <p className="current-temperature">{Math.ceil(weatherCurrentData?.main?.temp)}°C</p>
                     <img src={`http://openweathermap.org/img/wn/${currentWeatherIcon}@4x.png`} alt="" />
